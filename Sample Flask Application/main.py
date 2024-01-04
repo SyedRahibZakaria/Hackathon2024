@@ -6,9 +6,9 @@ import re
 
 app = Flask(__name__)
 
-URL = "https://<org_name>.atlassian.net/wiki/api/v2/pages"
-TOKEN = ""
-auth = HTTPBasicAuth("<email_id>@gmail.com", TOKEN)   # replace email id
+URL = "https://pantherrr.atlassian.net/wiki/api/v2/pages"
+TOKEN = "ATATT3xFfGF0YRPOL6hm2-J9RSc-VJXCjVXumteip9eOaCu5oL88yVx_GAiP4BDqhjCI3cPVH_0sp8FHKo9FUyUPypZoqU80ute9G1uGPSMhgjSwXKjY7RucM55VBe3EpwQg16FEqcXkSADvuSqhdcVl_PPo6CpBno50PYhOom0EOqOxZCbSVL4=659D3F48"
+auth = HTTPBasicAuth("syedrahibreda@gmail.com", TOKEN)   # replace email id
 headers = {
     "Accept": "application/json"
 }
@@ -42,7 +42,7 @@ def main():
         auth=auth
     )
     # Filtering page id, title and page link
-    BASE_URL = "https://<your_registered_name>.atlassian.net/wiki"  # replace <your_registered_name>
+    BASE_URL = "https://pantherrr.atlassian.net/wiki"  # replace <your_registered_name>
 
     pages = {}
 
@@ -63,7 +63,7 @@ def home(filter):
         auth=auth
     )
     # Filtering page id, title and page link
-    BASE_URL = "https://<your_registered_name>.atlassian.net/wiki"  # replace <your_registered_name>
+    BASE_URL = "https://pantherrr.atlassian.net/wiki"  # replace <your_registered_name>
 
     pages = {}
 
@@ -86,7 +86,7 @@ def home(filter):
     for title in matched_titles:
         id = pages[title]['id']
         params = {'id': id}
-        url = f"https://<your_registered_name>.atlassian.net/wiki/rest/api/content/{id}?expand=body.view"
+        url = f"https://pantherrr.atlassian.net/wiki/rest/api/content/{id}?expand=body.view"
         response = requests.request(
             "GET",
             url,

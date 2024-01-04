@@ -1,0 +1,10 @@
+name: Github Actions Demo Test
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
