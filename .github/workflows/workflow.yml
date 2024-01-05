@@ -20,9 +20,9 @@ jobs:
       - run: ls -la
       - run: pwd
 
-      - run: cd /home/runner/work/Hackathon2024/Hackathon2024/infrastructure/ && ls -la
+      - run: cd /home/runner/work/Hackathon2024/Hackathon2024/infrastructure/ \
 
-      - run: ls -la
+      - run: ls -la \
 
       - name: Setup Terraformf
         uses: hashicorp/setup-terraform@v1
