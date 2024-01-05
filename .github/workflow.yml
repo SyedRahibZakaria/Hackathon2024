@@ -1,0 +1,14 @@
+name: Github Actions Demo Test
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build-ecr:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        run: ls
