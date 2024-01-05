@@ -20,7 +20,7 @@ jobs:
       - run: ls -la
       - run: pwd
 
-      - run: cd /infrastructure/ECR
+      - run: cd /home/runner/work/Hackathon2024/Hackathon2024/infrastructure/
 
       - run: ls -la
 
