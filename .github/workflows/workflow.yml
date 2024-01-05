@@ -17,25 +17,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - run: ls -la
-      - run: pwd
-
-      - run: cd /home/runner/work/Hackathon2024/Hackathon2024/infrastructure/ \
-
-      - run: ls -la \
-
-      - name: Setup Terraformf
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+         cd /home/runner/work/Hackathon2024/Hackathon2024/infrastructure/ECR
+         ls
+         terraform init
+         terraform apply --auto-approve
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color
-
-      - name: Terraform Apply
-        id: apply
-        run: terraform apply --auto-approve
+#      - name: Terraform Plan
+#        id: plan
+#        run: terraform plan -no-color
+#
+#      - name: Terraform Apply
+#        id: apply
+#        run: terraform apply --auto-approve
 
