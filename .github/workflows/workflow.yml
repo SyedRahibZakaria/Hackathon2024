@@ -17,11 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - run: cd infrastructure/ECR
+      - run: cd /infrastructure/ECR
 
       - run: ls
 
-      - name: Setup Terraform
+      - name: Setup Terraformf
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
