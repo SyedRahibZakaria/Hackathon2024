@@ -7,8 +7,30 @@ on:
 jobs:
 
   build-ecr:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY: ${{ secrets.AWS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
+      AWS_REGION: "us-east-1"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: ls
+
+      - run: cd infrastructure/ECR/
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply --auto-approve
+

@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "docker_image_repo" {
-  name                 = "hackathon-24"
+  name                 = "hackathon-2024"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
