@@ -19,7 +19,7 @@ jobs:
 
       - run: cd infrastructure/ECR/
 
-      - run ls
+      - run: ls
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
