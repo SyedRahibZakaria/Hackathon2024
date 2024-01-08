@@ -95,7 +95,7 @@ jobs:
           terraform apply --auto-approve
 
   destroy-ecr:
-    if: ${{ github.event.inputs.terraform_destroy == 'ecr' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.terraform_destroy == 'ecr' }}
     runs-on: ubuntu-latest
     needs: [build-ecs]
     env:
@@ -119,7 +119,7 @@ jobs:
           terraform destroy --auto-approve
 
   destroy-ecs:
-    if: ${{ github.event.inputs.terraform_destroy == 'ecs' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.terraform_destroy == 'ecs' }}
     runs-on: ubuntu-latest
     needs: [build-ecs]
     env:
