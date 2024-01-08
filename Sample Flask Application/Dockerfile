@@ -1,7 +1,11 @@
 FROM python:3.11-alpine
 
-ADD . .
+WORKDIR /app
+
+COPY . /app
 
 RUN pip install -r requirements.txt
 
-CMD ["flask", "--app", "main", "run" ]
+EXPOSE 3000
+
+CMD python main.py
