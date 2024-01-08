@@ -2,14 +2,16 @@ name: Github Actions Demo Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   workflow_dispatch:
-    terraform_destroy:
-      type: choice
-      options:
-        - ecs
-        - ecr
-
+    inputs:
+      terraform_destroy:
+        description: 'Select resource to destroy'
+        required: true
+        type: choice
+        options:
+          - ecs
+          - ecr
 
 jobs:
 
