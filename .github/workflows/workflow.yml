@@ -95,7 +95,7 @@ jobs:
   destroy-ecr:
     if: ${{ github.event.inputs.action == 'ecr' }}
     runs-on: ubuntu-latest
-    needs: [build-and-push-docker-image]
+    needs: [build-ecs]
     env:
       AWS_ACCESS_KEY: ${{ secrets.AWS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
@@ -119,7 +119,7 @@ jobs:
   destroy-ecs:
     if: ${{ github.event.inputs.action == 'ecs' }}
     runs-on: ubuntu-latest
-    needs: [build-and-push-docker-image]
+    needs: [build-ecs]
     env:
       AWS_ACCESS_KEY: ${{ secrets.AWS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
