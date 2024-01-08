@@ -7,7 +7,7 @@ terraform {
   }
       backend "s3" {
           bucket = "hackathon2024"
-          key    = "hackathon2024/main/ecr_infra.tfstate"
+          key    = "hackathon2024/main/ecs_infra.tfstate"
           region = "us-east-1"
     }
 }
