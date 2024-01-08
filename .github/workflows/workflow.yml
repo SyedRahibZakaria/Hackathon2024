@@ -55,6 +55,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           ECR_REPO_URL: ${{ steps.login-ecr.outputs.registry }}/hackathon-2024
         run: |
+          cd /home/runner/work/Hackathon2024/Hackathon2024/Sample\ Flask\ Application
           echo $ECR_REPO_URL
           echo $ECR_REGISTRY
           docker build -t $ECR_REPO_URL:$IMAGE_TAG .
