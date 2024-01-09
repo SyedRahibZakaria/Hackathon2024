@@ -1,11 +1,13 @@
-FROM python:3.11-alpine
+# syntax=docker/dockerfile:1
 
-WORKDIR /app
+FROM python:3.10-alpine
 
-COPY . /app
+WORKDIR /python-docker
 
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 
-EXPOSE 3000
+COPY . /python-docker
 
-CMD python main.py
+CMD ["python3", "main.py"]

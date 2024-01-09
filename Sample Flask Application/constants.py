@@ -1,0 +1,2 @@
+URL = "https://pantherrr.atlassian.net/wiki/api/v2/pages"
+TOKEN = "ATATT3xFfGF0YRPOL6hm2-J9RSc-VJXCjVXumteip9eOaCu5oL88yVx_GAiP4BDqhjCI3cPVH_0sp8FHKo9FUyUPypZoqU80ute9G1uGPSMhgjSwXKjY7RucM55VBe3EpwQg16FEqcXkSADvuSqhdcVl_PPo6CpBno50PYhOom0EOqOxZCbSVL4=659D3F48"

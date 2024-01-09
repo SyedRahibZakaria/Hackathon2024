@@ -1,17 +1,18 @@
-from flask import Flask
+from flask import Flask, render_template
 import json
 import requests
 from requests.auth import HTTPBasicAuth
 import re
+from constants import URL, TOKEN
 
 app = Flask(__name__)
 
-URL = "https://pantherrr.atlassian.net/wiki/api/v2/pages"
-TOKEN = "ATATT3xFfGF0YRPOL6hm2-J9RSc-VJXCjVXumteip9eOaCu5oL88yVx_GAiP4BDqhjCI3cPVH_0sp8FHKo9FUyUPypZoqU80ute9G1uGPSMhgjSwXKjY7RucM55VBe3EpwQg16FEqcXkSADvuSqhdcVl_PPo6CpBno50PYhOom0EOqOxZCbSVL4=659D3F48"
-auth = HTTPBasicAuth("syedrahibreda@gmail.com", TOKEN)   # replace email id
+auth = HTTPBasicAuth("syedrahibreda@gmail.com", TOKEN)
 headers = {
     "Accept": "application/json"
 }
+request_kwargs = {"headers": headers,
+                  "auth": auth}
 
 
 def build_response(body):
@@ -23,11 +24,9 @@ def build_response(body):
     return json.dumps(payload)
 
 def parse_data(content):
-    # extract content within <p> </p>
     pattern = re.compile(r'<p>(.*?)</p>', re.DOTALL)
     matches = re.findall(pattern, content)
     combined_para = " ".join(matches)
-    # remove remaining content within <html tag>
     pattern = re.compile(r'<.*?>')
     cleaned_content = re.sub(pattern, ' ', combined_para)
     return cleaned_content
@@ -38,49 +37,45 @@ def main():
     response = requests.request(
         "GET",
         URL,
-        headers=headers,
-        auth=auth
+        **request_kwargs
     )
     # Filtering page id, title and page link
-    BASE_URL = "https://pantherrr.atlassian.net/wiki"  # replace <your_registered_name>
-
+    BASE_URL = "https://pantherrr.atlassian.net/wiki"
     pages = {}
 
-    for item in json.loads(response.text)['results']:
-        print(f"id: {item['id']}, title: {item['title']}, page_url: {BASE_URL + item['_links']['webui']}")
-        pages[item['title']] = {'id': item['id'], 'link': BASE_URL + item['_links']['webui']}
-
-    return build_response(pages)
+    results = json.loads(response.text).get('results', '')
+    if results:
+        for item in results:
+            # print(f"id: {item['id']}, title: {item['title']}, page_url: {BASE_URL + item['_links']['webui']}")
+            pages[item['title']] = {'id': item['id'], 'link': BASE_URL + item['_links']['webui']}
+    return render_template('pages_title.html', pages=pages)
 
 
 @app.route("/get_pages/<filter>")
 def home(filter):
-    print(filter.split(" "))
     response = requests.request(
         "GET",
         URL,
-        headers=headers,
-        auth=auth
+        **request_kwargs
     )
     # Filtering page id, title and page link
-    BASE_URL = "https://pantherrr.atlassian.net/wiki"  # replace <your_registered_name>
-
+    BASE_URL = "https://pantherrr.atlassian.net/wiki"
     pages = {}
 
-    for item in json.loads(response.text)['results']:
-        print(f"id: {item['id']}, title: {item['title']}, page_url: {BASE_URL + item['_links']['webui']}")
-        pages[item['title']] = {'id': item['id'], 'link': BASE_URL + item['_links']['webui']}
+    results = json.loads(response.text).get('results', '')
+    if results:
+        for item in results:
+            # print(f"id: {item['id']}, title: {item['title']}, page_url: {BASE_URL + item['_links']['webui']}")
+            pages[item['title']] = {'id': item['id'], 'link': BASE_URL + item['_links']['webui']}
 
-        matched_titles = []
-        keywords = filter.split(" ")
+    matched_titles = []
+    keywords = filter.split(" ")
 
-        for title in pages:
-            if any(keyword.lower() in title.lower() for keyword in keywords):
-                matched_titles.append(title)
+    for title in pages:
+        if any(keyword.lower() in title.lower() for keyword in keywords):
+            matched_titles.append(title)
 
-    print(f"Matched keywords: {matched_titles}")
-
-    print("\nBefore preprocessing!!!")
+    # print(f"Matched keywords: {matched_titles}")
     page_content_merged = ""
 
     for title in matched_titles:
@@ -90,22 +85,15 @@ def home(filter):
         response = requests.request(
             "GET",
             url,
-            headers=headers,
-            auth=auth,
-            params=params
+            params=params,
+            **request_kwargs
         )
         page_content_merged += f"\n\n\n{json.loads(response.text)['body']['view']['value']}"
-
-    print(page_content_merged)
-
-    print("\nAfter preprocessing!!!")
-
+    # print(page_content_merged)
     cleaned = parse_data(page_content_merged)
-
-    print(f"\n\n\n {cleaned}")
-
-    return build_response(cleaned)
+    # print(f"\n\n\n {cleaned}")
+    return render_template('pages_title.html', pages=cleaned)
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=int(3000),debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
