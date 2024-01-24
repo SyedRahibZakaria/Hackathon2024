@@ -82,6 +82,7 @@ def home(filter):
     cleaned = parse_data(page_content_merged)
     return render_template('pages_title.html', pages=cleaned)
 
+
 @app.route('/result', methods=['GET', 'POST'])
 def show_result():
     inp_text = ""
