@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import json
 import requests
 from requests.auth import HTTPBasicAuth
 import re
 from constants import URL, TOKEN
+from summarizer import extract_text_from_url, summerize_text
 
 app = Flask(__name__)
 
@@ -39,14 +40,11 @@ def main():
         URL,
         **request_kwargs
     )
-    # Filtering page id, title and page link
     BASE_URL = "https://pantherrr.atlassian.net/wiki"
     pages = {}
-
     results = json.loads(response.text).get('results', '')
     if results:
         for item in results:
-            # print(f"id: {item['id']}, title: {item['title']}, page_url: {BASE_URL + item['_links']['webui']}")
             pages[item['title']] = {'id': item['id'], 'link': BASE_URL + item['_links']['webui']}
     return render_template('pages_title.html', pages=pages)
 
@@ -58,26 +56,18 @@ def home(filter):
         URL,
         **request_kwargs
     )
-    # Filtering page id, title and page link
     BASE_URL = "https://pantherrr.atlassian.net/wiki"
     pages = {}
-
     results = json.loads(response.text).get('results', '')
     if results:
         for item in results:
-            # print(f"id: {item['id']}, title: {item['title']}, page_url: {BASE_URL + item['_links']['webui']}")
             pages[item['title']] = {'id': item['id'], 'link': BASE_URL + item['_links']['webui']}
-
     matched_titles = []
     keywords = filter.split(" ")
-
     for title in pages:
         if any(keyword.lower() in title.lower() for keyword in keywords):
             matched_titles.append(title)
-
-    # print(f"Matched keywords: {matched_titles}")
     page_content_merged = ""
-
     for title in matched_titles:
         id = pages[title]['id']
         params = {'id': id}
@@ -89,10 +79,19 @@ def home(filter):
             **request_kwargs
         )
         page_content_merged += f"\n\n\n{json.loads(response.text)['body']['view']['value']}"
-    # print(page_content_merged)
     cleaned = parse_data(page_content_merged)
-    # print(f"\n\n\n {cleaned}")
     return render_template('pages_title.html', pages=cleaned)
+
+@app.route('/result', methods=['GET', 'POST'])
+def show_result():
+    inp_text = ""
+    input_text = extract_text_from_url(URL)
+    if request.method == 'POST':
+        inp_text = request.form['text']
+    if inp_text:
+        input_text = extract_text_from_url(inp_text)
+    summary = summerize_text(input_text)
+    return render_template('result_summeraze.html', summary=summary)
 
 
 if __name__ == '__main__':

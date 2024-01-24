@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Summarization of the text</title>
+</head>
+<body>
+<form action="/result" enctype="multipart/form-data" method="POST">
+    <input name="text" type="text"/>
+    <input type="submit"/>
+</form>
+
+{% if summary %}
+    <h1>Summarization</h1>
+    <p>{{ summary }}y</p>
+{% else %}
+    <h1>No any text yet..</h1>
+{% endif %}
+
+</body>
+</html>
